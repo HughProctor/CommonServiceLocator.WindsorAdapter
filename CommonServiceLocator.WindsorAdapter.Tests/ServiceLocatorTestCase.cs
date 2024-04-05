@@ -1,5 +1,3 @@
-using Microsoft.Practices.ServiceLocation;
-
 namespace CommonServiceLocator.WindsorAdapter.Tests
 {
 	using System.Collections;
@@ -23,7 +21,7 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		public void GetInstance()
 		{
 			ILogger instance = locator.GetInstance<ILogger>();
-			Assert.IsNotNull(instance, "instance should not be null");
+			Assert.That(instance, Is.Not.Null, "instance should not be null");
 		}
 
 		[Test]
@@ -35,15 +33,15 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		[Test]
 		public void GetNamedInstance()
 		{
-			ILogger instance = locator.GetInstance<ILogger>(typeof(AdvnacedLogger).FullName);
-			Assert.IsInstanceOf(typeof(AdvnacedLogger), instance, "Should be an advanced logger");
+			ILogger instance = locator.GetInstance<ILogger>(typeof(AdvancedLogger).FullName);
+			Assert.That(instance, Is.InstanceOf(typeof(AdvancedLogger)), "Should be an advanced logger");
 		}
 
 		[Test]
 		public void GetNamedInstance2()
 		{
 			ILogger instance = locator.GetInstance<ILogger>(typeof(SimpleLogger).FullName);
-			Assert.IsInstanceOf(typeof(SimpleLogger), instance, "Should be a simple logger");
+			Assert.That(instance, Is.InstanceOf(typeof(SimpleLogger)), "Should be a simple logger");
 		}
 
 		[Test]
@@ -63,7 +61,7 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		{
 			IEnumerable<ILogger> instances = locator.GetAllInstances<ILogger>();
 			IList<ILogger> list = new List<ILogger>(instances);
-			Assert.AreEqual(2, list.Count);
+			Assert.That(2, Is.EqualTo(list.Count));
 		}
 
 		[Test]
@@ -71,15 +69,15 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		{
 			IEnumerable<IDictionary> instances = locator.GetAllInstances<IDictionary>();
 			IList<IDictionary> list = new List<IDictionary>(instances);
-			Assert.AreEqual(0, list.Count);
+			Assert.That(0, Is.EqualTo(list.Count));
 		}
 
 		[Test]
 		public void GenericOverload_GetInstance()
 		{
-			Assert.AreEqual(
-				locator.GetInstance<ILogger>().GetType(),
-				locator.GetInstance(typeof(ILogger), null).GetType(),
+			Assert.That(
+				locator.GetInstance<ILogger>().GetType(), Is.EqualTo(
+				locator.GetInstance(typeof(ILogger), null).GetType()),
 				"should get the same type"
 				);
 		}
@@ -87,9 +85,9 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		[Test]
 		public void GenericOverload_GetInstance_WithName()
 		{
-			Assert.AreEqual(
-				locator.GetInstance<ILogger>(typeof(AdvnacedLogger).FullName).GetType(),
-				locator.GetInstance(typeof(ILogger), typeof(AdvnacedLogger).FullName).GetType(),
+			Assert.That(
+				locator.GetInstance<ILogger>(typeof(AdvancedLogger).FullName).GetType(), Is.EqualTo(
+				locator.GetInstance(typeof(ILogger), typeof(AdvancedLogger).FullName).GetType()),
 				"should get the same type"
 				);
 		}
@@ -97,9 +95,9 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		[Test]
 		public void Overload_GetInstance_NoName_And_NullName()
 		{
-			Assert.AreEqual(
-				locator.GetInstance<ILogger>().GetType(),
-				locator.GetInstance<ILogger>(null).GetType(),
+			Assert.That(
+				locator.GetInstance<ILogger>().GetType(), Is.EqualTo(
+				locator.GetInstance<ILogger>(null).GetType()),
 				"should get the same type"
 				);
 		}
@@ -109,12 +107,12 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		{
 			List<ILogger> genericLoggers = new List<ILogger>(locator.GetAllInstances<ILogger>());
 			List<object> plainLoggers = new List<object>(locator.GetAllInstances(typeof(ILogger)));
-			Assert.AreEqual(genericLoggers.Count, plainLoggers.Count);
+			Assert.That(genericLoggers.Count, Is.EqualTo(plainLoggers.Count));
 			for (int i = 0; i < genericLoggers.Count; i++)
 			{
-				Assert.AreEqual(
-					genericLoggers[i].GetType(),
-					plainLoggers[i].GetType(),
+				Assert.That(
+					genericLoggers[i].GetType(), Is.EqualTo(
+					plainLoggers[i].GetType()),
 					"instances (" + i + ") should give the same type");
 			}
 		}

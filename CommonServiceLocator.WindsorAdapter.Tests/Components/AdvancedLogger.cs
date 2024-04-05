@@ -2,7 +2,7 @@ namespace CommonServiceLocator.WindsorAdapter.Tests.Components
 {
 	using System;
 
-	public class AdvnacedLogger : ILogger
+	public class AdvancedLogger : ILogger
 	{
 		public void Log(string msg)
 		{

@@ -1,5 +1,3 @@
-using Microsoft.Practices.ServiceLocation;
-
 namespace CommonServiceLocator.WindsorAdapter.Tests
 {
 	using Castle.MicroKernel.Registration;
@@ -13,10 +11,9 @@ namespace CommonServiceLocator.WindsorAdapter.Tests
 		protected override IServiceLocator CreateServiceLocator()
 		{
 			IWindsorContainer container = new WindsorContainer()
-				.Register(
-				AllTypes.Of<ILogger>()
+				.Register(Classes
 					.FromAssembly(typeof(ILogger).Assembly)
-					.WithService.FirstInterface()
+					.Pick().WithServiceFirstInterface()
 				);
 			return new WindsorServiceLocator(container);
 		}
